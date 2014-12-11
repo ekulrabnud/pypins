@@ -10,6 +10,8 @@ GPIO.setwarnings(False)
 @app.route("/")
 def hello():
 	pinstate = get_pinstate()
+	for k,v in pinstate.items():
+		print k,v
 	templateData = {
 		'title':'Dunbar PI',
 		'pin22' : pinstate['22'],
@@ -23,7 +25,7 @@ def hello():
 
 
 @app.route("/relay")
-def relayi():
+def relay():
 	data = request.args
 	pin = int(data['pin'])
 	try:
@@ -45,9 +47,9 @@ def get_pinstate():
 	for i in pins:
 		GPIO.setup(i,GPIO.OUT)
 		if (GPIO.input(i)):
-			pinstate[str(i)] = "ON"
-		else: 
 			pinstate[str(i)] = "OFF"
+		else: 
+			pinstate[str(i)] = "ON"
   
       #pinstate = json.dumps(pinstate)
 	return pinstate
